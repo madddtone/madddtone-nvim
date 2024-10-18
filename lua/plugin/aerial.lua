@@ -15,12 +15,34 @@ return {
 		},
 
 		attach_mode = "window", -- Attach to the current window
-
-		-- Additional settings can go here
 	},
 	-- Optional dependencies
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
 		"nvim-tree/nvim-web-devicons",
+	},
+	-- Lazy load Aerial with the 'VeryLazy' event
+	event = "VeryLazy",
+	-- Set up keymaps to load Aerial when necessary and focus the window
+	keys = {
+		{
+			"<leader>,",
+			function()
+				require("aerial").toggle() -- Open Aerial
+
+				-- Wait for the window to open, then switch focus to Aerial
+				vim.defer_fn(function()
+					-- Search for the Aerial window and switch focus
+					for i = 1, vim.fn.winnr("$") do
+						local win_buf = vim.fn.winbufnr(i)
+						if vim.bo[win_buf].filetype == "aerial" then
+							vim.api.nvim_set_current_win(vim.fn.win_getid(i))
+							break
+						end
+					end
+				end, 50) -- Delay to ensure the window is ready
+			end,
+			desc = "Toggle Aerial and focus window",
+		},
 	},
 }

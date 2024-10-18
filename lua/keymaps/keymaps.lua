@@ -17,20 +17,3 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-
--- Open aerial float
-vim.keymap.set("n", "<leader>,", function()
-	require("aerial").toggle() -- Open Aerial
-
-	-- Wait for the window to open, then switch focus to Aerial
-	vim.defer_fn(function()
-		-- Search for the Aerial window and switch focus
-		for i = 1, vim.fn.winnr("$") do
-			local win_buf = vim.fn.winbufnr(i)
-			if vim.bo[win_buf].filetype == "aerial" then
-				vim.api.nvim_set_current_win(vim.fn.win_getid(i))
-				break
-			end
-		end
-	end, 50) -- Delay to ensure the window is ready
-end)
