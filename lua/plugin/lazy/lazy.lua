@@ -56,4 +56,6 @@ require("lazy").setup({
 	require("plugin.mini"),
 	-- treesitter
 	require("plugin.treesitter"),
+	-- undotree
+	require("plugin.undotree"),
 })
