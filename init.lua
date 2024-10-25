@@ -13,6 +13,9 @@ vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- no wrap
+-- vim.opt.wrap = false
+
 -- mouse mode
 vim.opt.mouse = "a"
 
@@ -75,5 +78,5 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- keymaps
+-- keymaps need to be loaded after plugins
 require("keymaps")

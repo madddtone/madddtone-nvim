@@ -26,8 +26,8 @@ require("lazy").setup({
 	require("plugin.autopairs"),
 	-- harpoon
 	require("plugin.harpoon"),
-	-- flash
-	require("plugin.flash"),
+	-- -- flash
+	-- require("plugin.flash"),
 	-- transparent
 	require("plugin.transparent"),
 	-- markdown preview
@@ -58,4 +58,6 @@ require("lazy").setup({
 	require("plugin.treesitter"),
 	-- undotree
 	require("plugin.undotree"),
+	-- dadbod
+	require("plugin.dadbod"),
 })
