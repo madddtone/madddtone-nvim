@@ -61,11 +61,7 @@ return {
 		end, { desc = "[S]earch [N]eovim files" })
 
 		vim.keymap.set("n", "<leader>sd", function()
-			builtin.find_files({ cwd = "~/Code/notes" })
+			builtin.find_files({ cwd = "~/projects/notes" })
 		end, { desc = "[S]earch [N]otes files" })
-
-		vim.keymap.set("n", "<leader>so", function()
-			builtin.find_files({ cwd = "~/.config/backup.nvim" })
-		end, { desc = "[S]earch [O]ld config" })
 	end,
 }

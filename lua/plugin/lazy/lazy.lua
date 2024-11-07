@@ -60,4 +60,6 @@ require("lazy").setup({
 	require("plugin.undotree"),
 	-- dadbod
 	require("plugin.dadbod"),
+	-- neorg
+	require("plugin.neorg"),
 })
