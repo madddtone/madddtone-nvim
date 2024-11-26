@@ -12,8 +12,6 @@ require("lazy").setup({
 	"tpope/vim-sleuth",
 	-- telescope fuzzy finder
 	require("plugin.telescope"),
-	-- neotree
-	require("plugin.neotree"),
 	-- lsp
 	require("plugin.lspconfig"),
 	-- conform
@@ -21,13 +19,11 @@ require("lazy").setup({
 	-- nvim-cmp
 	require("plugin.cmp"),
 	-- alpha nvim
-	require("plugin.alpha"),
+	-- require("plugin.alpha"),
 	-- auto pairs
 	require("plugin.autopairs"),
 	-- harpoon
 	require("plugin.harpoon"),
-	-- -- flash
-	-- require("plugin.flash"),
 	-- transparent
 	require("plugin.transparent"),
 	-- markdown preview
@@ -36,8 +32,6 @@ require("lazy").setup({
 	require("plugin.catppuccin"),
 	-- treesj
 	require("plugin.treesj"),
-	-- colorizer
-	require("plugin.colorizer"),
 	-- aerial
 	require("plugin.aerial"),
 	-- lazygit
@@ -62,4 +56,8 @@ require("lazy").setup({
 	require("plugin.dadbod"),
 	-- neorg
 	require("plugin.neorg"),
+	-- neotree
+	require("plugin.neotree"),
+	-- colorizer
+	-- require("plugin.colorizer"),
 })
