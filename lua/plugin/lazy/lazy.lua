@@ -58,6 +58,6 @@ require("lazy").setup({
 	require("plugin.neorg"),
 	-- neotree
 	require("plugin.neotree"),
-	-- colorizer
-	-- require("plugin.colorizer"),
+	-- noice-nvim
+	require("plugin.noice-nvim"),
 })
