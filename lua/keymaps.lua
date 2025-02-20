@@ -21,3 +21,10 @@ vim.keymap.set(
 -- undo tree keymaps
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle UndoTree" })
 vim.api.nvim_set_keymap("n", "<leader>n", ":noh<CR>", { noremap = true, silent = true })
+
+-- neorg
+vim.keymap.set("n", "<leader>]", ":Neorg workspace notes<CR>", {
+	desc = "Open Neorg notes workspace",
+	silent = true,
+	noremap = true,
+})
