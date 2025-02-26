@@ -22,9 +22,9 @@ vim.keymap.set(
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle UndoTree" })
 vim.api.nvim_set_keymap("n", "<leader>n", ":noh<CR>", { noremap = true, silent = true })
 
--- neorg
-vim.keymap.set("n", "<leader>]", ":Neorg workspace notes<CR>", {
-	desc = "Open Neorg notes workspace",
+-- neorg: open in vertical split view
+vim.keymap.set("n", "<leader>]", ":vsplit | Neorg workspace notes<CR>", {
+	desc = "Open Neorg notes workspace in a vsplit",
 	silent = true,
 	noremap = true,
 })
