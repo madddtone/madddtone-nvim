@@ -28,7 +28,7 @@ require("lazy").setup({
 	require("plugin.transparent"),
 	-- markdown preview
 	require("plugin.markdown"),
-	-- color scheme catppuccin
+	-- -- color scheme catppuccin
 	require("plugin.catppuccin"),
 	-- treesj
 	require("plugin.treesj"),
