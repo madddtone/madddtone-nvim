@@ -39,7 +39,7 @@ require("lazy").setup({
 	-- comment nvim
 	require("plugin.comment"),
 	-- supermaven
-	require("plugin.supermaven"),
+	-- require("plugin.supermaven"),
 	-- gitsign
 	require("plugin.gitsign"),
 	-- whichkey
@@ -55,7 +55,7 @@ require("lazy").setup({
 	-- dadbod
 	require("plugin.dadbod"),
 	-- neorg
-	require("plugin.neorg"),
+	-- require("plugin.neorg"),
 	-- neotree
 	require("plugin.neotree"),
 	-- noice-nvim
