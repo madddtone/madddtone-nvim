@@ -29,10 +29,10 @@ vim.keymap.set("n", "<leader>[", ":vsplit | Neorg workspace notes<CR>", {
 	noremap = true,
 })
 
-vim.keymap.set("n", "<leader>yp", function()
+vim.keymap.set("n", "<leader>cp", function()
 	vim.fn.setreg("+", vim.fn.expand("%:p"))
 end, { desc = "Yank file path" })
 
-vim.keymap.set("n", "<leader>yn", function()
+vim.keymap.set("n", "<leader>cn", function()
 	vim.fn.setreg("+", vim.fn.expand("%:t"))
 end, { desc = "Yank file name" })
