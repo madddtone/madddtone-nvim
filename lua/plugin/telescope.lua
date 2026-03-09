@@ -18,6 +18,11 @@ return {
 	},
 	config = function()
 		require("telescope").setup({
+			pickers = {
+				lsp_references = {
+					path_display = { "tail" }, -- only show filename for references
+				},
+			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
