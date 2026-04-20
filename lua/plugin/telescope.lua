@@ -18,6 +18,11 @@ return {
 	},
 	config = function()
 		require("telescope").setup({
+			defaults = {
+				preview = {
+					treesitter = false,
+				},
+			},
 			pickers = {
 				lsp_references = {
 					path_display = { "tail" }, -- only show filename for references
