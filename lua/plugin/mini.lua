@@ -83,18 +83,32 @@ return { -- Collection of various small independent plugins/modules
 		--  You could remove this setup call if you don't like it,
 		--  and try some other statusline plugin
 		local statusline = require("mini.statusline")
-		-- set use_icons to true if you have a Nerd Font
 		statusline.setup({ use_icons = vim.g.have_nerd_font })
 
-		-- You can configure sections in the statusline by overriding their
-		-- default behavior. For example, here we set the section for
-		-- cursor location to LINE:COLUMN
-		---@diagnostic disable-next-line: duplicate-set-field
 		statusline.section_location = function()
 			return "%2l:%-2v"
 		end
 
-		-- ... and there is more!
-		--  Check out: https://github.com/echasnovski/mini.nvim
+		-- mini.statusline's ensure_content sets vim.wo.statusline on ALL windows,
+		-- overriding style="minimal" on floats and causing [Scratch] labels.
+		-- Replace its autocmd with one that skips floating windows.
+		vim.api.nvim_create_augroup("MiniStatusline", { clear = true })
+		local function ensure_content()
+			local cur_win_id = vim.api.nvim_get_current_win()
+			local is_global_stl = vim.o.laststatus == 3
+			for _, win_id in ipairs(vim.api.nvim_list_wins()) do
+				if vim.api.nvim_win_get_config(win_id).relative == "" then
+					vim.wo[win_id].statusline = (win_id == cur_win_id or is_global_stl)
+						and "%{%v:lua.MiniStatusline.active()%}"
+						or "%{%v:lua.MiniStatusline.inactive()%}"
+				end
+			end
+		end
+		vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, {
+			group = "MiniStatusline",
+			pattern = "*",
+			callback = vim.schedule_wrap(ensure_content),
+			desc = "Ensure statusline content",
+		})
 	end,
 }
