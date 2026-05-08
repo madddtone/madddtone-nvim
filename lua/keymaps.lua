@@ -18,12 +18,16 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- neotree keymaps
-vim.keymap.set(
-	"n",
-	"<C-g>",
-	":Neotree float filesystem reveal=true<CR>",
-	{ desc = "Toggle Neo-Tree in float and reveal buffer" }
-)
+vim.keymap.set("n", "<C-g>", function()
+	local cwd = vim.fn.getcwd()
+	local path = vim.api.nvim_buf_get_name(0)
+
+	if path ~= "" and vim.fn.filereadable(path) == 1 and vim.fs.relpath(cwd, path) then
+		vim.cmd("Neotree float filesystem reveal_file=" .. vim.fn.fnameescape(path))
+	else
+		vim.cmd("Neotree float filesystem dir=" .. vim.fn.fnameescape(cwd))
+	end
+end, { desc = "Toggle Neo-Tree in float and reveal buffer" })
 
 -- undo tree keymaps
 vim.keymap.set("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { desc = "Toggle UndoTree" })
