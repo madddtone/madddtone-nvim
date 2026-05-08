@@ -1,7 +1,6 @@
--- required files
-require("plugin.lazy.lazy")
+vim.loader.enable()
 
--- set leader key
+-- Set leader keys before loading plugins.
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -13,14 +12,16 @@ vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
--- no wrap
--- vim.opt.wrap = false
-
 -- mouse mode
 vim.opt.mouse = "a"
 
+-- Don't show the mode, since it's already in the status line
+vim.opt.showmode = false
+
 -- sync os clipboard
-vim.opt.clipboard = "unnamedplus"
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus"
+end)
 
 -- Tab and indent
 vim.opt.tabstop = 4
@@ -67,16 +68,40 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
+-- Ask to save unsaved changes instead of failing commands like :q.
+vim.opt.confirm = true
+
+vim.diagnostic.config({
+	update_in_insert = false,
+	severity_sort = true,
+	float = { border = "rounded", source = "if_many" },
+	underline = { severity = { min = vim.diagnostic.severity.WARN } },
+	virtual_text = true,
+	virtual_lines = false,
+	jump = {
+		on_jump = function(_, bufnr)
+			vim.diagnostic.open_float({
+				bufnr = bufnr,
+				scope = "cursor",
+				focus = false,
+			})
+		end,
+	},
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
+--  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank()
+		vim.hl.on_yank()
 	end,
 })
+
+-- required files
+require("plugin.lazy.lazy")
 
 -- keymaps need to be loaded after plugins
 require("keymaps")
