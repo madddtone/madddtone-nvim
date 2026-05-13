@@ -89,6 +89,41 @@ return { -- Collection of various small independent plugins/modules
 			return "%2l:%-2v"
 		end
 
+		-- Override active() to inject current function context from aerial
+		local aerial = require("aerial")
+		statusline.active = function()
+			local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
+			local git = statusline.section_git({ trunc_width = 40 })
+			local diff = statusline.section_diff({ trunc_width = 75 })
+			local diagnostics = statusline.section_diagnostics({ trunc_width = 75 })
+			local lsp = statusline.section_lsp({ trunc_width = 75 })
+			local filename = statusline.section_filename({ trunc_width = 140 })
+			local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
+			local location = statusline.section_location({ trunc_width = 75 })
+			local search = statusline.section_searchcount({ trunc_width = 75 })
+
+			local context = ""
+			local ok, locations = pcall(aerial.get_location, false)
+			if ok and #locations > 0 then
+				local parts = {}
+				for _, loc in ipairs(locations) do
+					table.insert(parts, loc.name)
+				end
+				context = " " .. table.concat(parts, " > ")
+			end
+
+			return statusline.combine_groups({
+				{ hl = mode_hl, strings = { mode } },
+				{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+				"%<",
+				{ hl = "MiniStatuslineFilename", strings = { filename } },
+				"%= ",
+				{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+				{ hl = "MiniStatuslineDevinfo", strings = { context } },
+				{ hl = mode_hl, strings = { search, location } },
+			})
+		end
+
 		-- mini.statusline's ensure_content sets vim.wo.statusline on ALL windows,
 		-- overriding style="minimal" on floats and causing [Scratch] labels.
 		-- Replace its autocmd with one that skips floating windows.
