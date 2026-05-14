@@ -10,7 +10,16 @@ return {
 		require("ts_context_commentstring").setup({
 			enable_autocmd = false,
 		})
-		local prehook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
+
+		require("Comment.ft").set("env", "#%s")
+		local ts_prehook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook()
+		local prehook = function(ctx)
+			local result = ts_prehook(ctx)
+			if result then
+				return result
+			end
+			return require("Comment.ft").get(vim.bo.filetype, ctx.ctype)
+		end
 		require("Comment").setup({
 			padding = true,
 			sticky = true,
@@ -34,7 +43,6 @@ return {
 				extended = false,
 			},
 			pre_hook = prehook,
-			post_hook = prehook,
 		})
 	end,
 }
