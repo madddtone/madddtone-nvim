@@ -97,6 +97,7 @@ return { -- Collection of various small independent plugins/modules
 			local diff = statusline.section_diff({ trunc_width = 75 })
 			local diagnostics = statusline.section_diagnostics({ trunc_width = 75 })
 			local lsp = statusline.section_lsp({ trunc_width = 75 })
+			local lsp_progress = vim.ui.progress_status()
 			local filename = statusline.section_filename({ trunc_width = 140 })
 			local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
 			local location = statusline.section_location({ trunc_width = 75 })
@@ -114,7 +115,7 @@ return { -- Collection of various small independent plugins/modules
 
 			return statusline.combine_groups({
 				{ hl = mode_hl, strings = { mode } },
-				{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+				{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp, lsp_progress } },
 				"%<",
 				{ hl = "MiniStatuslineFilename", strings = { filename } },
 				"%= ",

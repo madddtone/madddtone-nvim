@@ -100,6 +100,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+-- Neovim 0.12 native ui2: replaces noice.nvim
+require("vim._core.ui2").enable()
+
+-- Rounded borders for all floating windows
+vim.opt.winborder = "rounded"
+
+-- Show LSP docs inline in completion popup
+vim.opt.completeopt:append("popup")
+
 -- required files
 require("plugin.lazy.lazy")
 
