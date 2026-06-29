@@ -48,6 +48,8 @@ require("lazy").setup {
 	require "plugin.todo-comment",
 	-- mini
 	require "plugin.mini",
+	-- lualine
+	require "plugin.lualine",
 	-- treesitter
 	require "plugin.treesitter",
 	-- undotree
