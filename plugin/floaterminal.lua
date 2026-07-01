@@ -89,12 +89,23 @@ vim.keymap.set({ "n", "t" }, "<space>tt", toggle_terminal)
 vim.keymap.set("t", ">", function() resize_terminal(10) end)
 vim.keymap.set("t", "<", function() resize_terminal(-10) end)
 
--- Prevent auto-paste of PRIMARY selection when terminal gains focus
-vim.api.nvim_create_autocmd("BufEnter", {
-	group = vim.api.nvim_create_augroup("Floaterminal", { clear = true }),
+-- Reduce input latency in terminal buffers
+local ttimeout_group = vim.api.nvim_create_augroup("FloaterminalTtimeout", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+	group = ttimeout_group,
 	callback = function()
 		if vim.bo.buftype == "terminal" then
-			vim.fn.setreg("*", "")
+			vim.o.ttimeoutlen = 5
 		end
 	end,
 })
+vim.api.nvim_create_autocmd("BufLeave", {
+	group = ttimeout_group,
+	callback = function()
+		if vim.bo.buftype == "terminal" then
+			vim.o.ttimeoutlen = 50
+		end
+	end,
+})
+
+
