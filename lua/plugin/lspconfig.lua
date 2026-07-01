@@ -91,7 +91,7 @@ return { -- LSP Configuration & Plugins
 						group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
 						callback = function(event2)
 							vim.lsp.buf.clear_references()
-							vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+							vim.api.nvim_clear_autocmds { group = "kickstart-lsp-highlight", buffer = event2.buf }
 						end,
 					})
 				end
@@ -101,9 +101,11 @@ return { -- LSP Configuration & Plugins
 				--
 				-- This may be unwanted, since they displace some of your code
 				if client and client:supports_method("textDocument/inlayHint", event.buf) then
-					map("<leader>th", function()
-						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-					end, "[T]oggle Inlay [H]ints")
+					map(
+						"<leader>th",
+						function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end,
+						"[T]oggle Inlay [H]ints"
+					)
 				end
 			end,
 		})
@@ -127,7 +129,7 @@ return { -- LSP Configuration & Plugins
 		local servers = {
 			intelephense = {},
 			-- clangd = {},
-			-- gopls = {},
+			gopls = {},
 			-- pyright = {},
 			-- rust_analyzer = {},
 			-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -148,7 +150,7 @@ return { -- LSP Configuration & Plugins
 
 					if client.workspace_folders then
 						local path = client.workspace_folders[1].name
-						if path ~= vim.fn.stdpath("config") and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
+						if path ~= vim.fn.stdpath "config" and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc")) then
 							return
 						end
 					end
@@ -190,7 +192,7 @@ return { -- LSP Configuration & Plugins
 		vim.list_extend(ensure_installed, {
 			"stylua", -- Used to format Lua code
 		})
-		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+		require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
 		for name, server in pairs(servers) do
 			server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
