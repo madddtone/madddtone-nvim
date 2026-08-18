@@ -76,7 +76,11 @@ vim.diagnostic.config({
 	severity_sort = true,
 	float = { border = "rounded", source = "if_many" },
 	underline = { severity = { min = vim.diagnostic.severity.WARN } },
-	virtual_text = true,
+	virtual_text = {
+		format = function(diag)
+			return (diag.source or "?"):gsub("^%l", string.upper) .. ": " .. diag.message
+		end,
+	},
 	virtual_lines = false,
 	jump = {
 		on_jump = function(_, bufnr)

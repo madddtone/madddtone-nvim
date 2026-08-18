@@ -17,6 +17,7 @@ return { -- Autoformat
 			local enabled_filetypes = {
 				lua = true,
 				javascript = true,
+				php = true,
 			}
 			if enabled_filetypes[vim.bo[bufnr].filetype] then
 				return { timeout_ms = 500 }
@@ -34,6 +35,7 @@ return { -- Autoformat
 			-- You can use a sub-list to tell conform to run *until* a formatter
 			-- is found.
 			javascript = { "prettierd" },
+			php = { "prettierd" },
 		},
 	},
 }

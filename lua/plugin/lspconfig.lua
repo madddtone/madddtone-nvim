@@ -126,7 +126,85 @@ return { -- LSP Configuration & Plugins
 		--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 		--  - settings (table): Override the default settings passed when initializing the server.
 		--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+		local function sonarlint_cmd()
+			local base = vim.fn.expand("~/.local/share/sonarlint/5.7.0")
+			local skip = {
+				"sonarjava.jar",
+				"sonarcsharp.jar",
+				"sonarpython.jar",
+				"sonargo.jar",
+				"sonariac.jar",
+				"csharpenterprise.jar",
+				"sonarlintomnisharp.jar",
+				"sonarjavasymbolicexecution.jar",
+			}
+			local cmd = {
+				base .. "/jre/bin/java",
+				"-jar",
+				base .. "/server/sonarlint-ls.jar",
+				"-stdio",
+				"-analyzers",
+			}
+			for _, jar in ipairs(vim.fn.glob(base .. "/analyzers/*.jar", false, true)) do
+				if not vim.tbl_contains(skip, vim.fn.fnamemodify(jar, ":t")) then
+					cmd[#cmd + 1] = jar
+				end
+			end
+			return cmd
+		end
+
 		local servers = {
+			sonarlint_language_server = {
+				cmd = sonarlint_cmd(),
+				filetypes = { "php", "javascript", "javascriptreact", "typescript", "typescriptreact", "css", "html" },
+				root_dir = function(bufnr, on_dir)
+					on_dir(vim.fs.root(bufnr, { ".git", "composer.json", "package.json" }) or vim.fn.getcwd())
+				end,
+				init_options = {
+					productKey = "vscode",
+					productName = "SonarLint Neovim",
+					productVersion = "5.7.0",
+					workspaceName = "iwos3",
+					showVerboseLogs = false,
+					platform = "linux",
+					architecture = "x64",
+					clientNodePath = vim.fn.exepath("node"),
+				},
+				settings = {
+					sonarlint = {
+						analysisMode = "ALL",
+						connectedMode = {
+							connections = vim.empty_dict(),
+							project = vim.empty_dict(),
+						},
+						rules = vim.empty_dict(),
+						pathToCompileCommands = "",
+					},
+				},
+				handlers = {
+					["sonarlint/isOpenInEditor"] = function()
+						return true
+					end,
+					["sonarlint/listFilesInFolder"] = function(_, params)
+						local folder = (params and params.folderUri or ""):gsub("^file://", "")
+						local files = {}
+						for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+							if vim.api.nvim_buf_is_loaded(buf) then
+								local path = vim.api.nvim_buf_get_name(buf)
+								if path ~= "" and (folder == "" or path:sub(1, #folder) == folder) then
+									local content = table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "\n")
+									files[#files + 1] = {
+										fileName = vim.fn.fnamemodify(path, ":t"),
+										filePath = path,
+										content = content,
+									}
+								end
+							end
+						end
+						return { foundFiles = files }
+					end,
+				},
+			},
 			intelephense = {},
 			-- clangd = {},
 			gopls = {},
@@ -191,6 +269,7 @@ return { -- LSP Configuration & Plugins
 		local ensure_installed = vim.tbl_keys(servers or {})
 		vim.list_extend(ensure_installed, {
 			"stylua", -- Used to format Lua code
+			"prettierd", -- Used to format PHP/JS
 		})
 		require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
