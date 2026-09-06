@@ -28,8 +28,10 @@ require("lazy").setup {
 	require "plugin.transparent",
 	-- markdown preview
 	require "plugin.markdown",
+	-- color scheme synced with omarchy (replaces catppuccin as default)
+	require "plugin.aether",
 	-- -- color scheme catppuccin
-	require "plugin.catppuccin",
+	-- require("plugin.catppuccin"),
 	-- treesj
 	require "plugin.treesj",
 	-- aerial
